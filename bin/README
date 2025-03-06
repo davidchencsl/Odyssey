@@ -5,3 +5,11 @@ In order to add a new protocol you need to modify the following places
 * worker.c
 * kvs.h
 * odlib/src/main/stats.c
+
+```
+echo 8192 | sudo tee /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages /sys/devices/system/node/node1/hugepages/hugepages-2048kB/nr_hugepages > /dev/null && \
+echo 10000000001 | sudo tee /proc/sys/kernel/shmmax /proc/sys/kernel/shmall > /dev/null
+sudo apt install libibverbs-dev librdmacm-dev numactl libgsl0-dev libnuma-dev cmake -y && \
+PUBKEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDCwtrDXEX9gAZAC5Idjpx3LIu9N7xIs8KDdj/hTtP5duRU2IOtd55XStUmJmWiQYGSeJq4EVCbnu9e2zSosZMd6bYGlI7RbQc4hOFaLvBWb+UwPAc4kY848TcjcJDfvQZZwHI9YW9tWG1KVQgzn3Nu8cHV0rGsHRzf57sjFR8o207sULQz/uO2+tPgIYhDVtpTWsOwbwhqqY9Lv6Fa5nKc3/Y5XkKPm4T4k7qgxj3Sa6JMyNG9+qQBGCmDopZ+sm8CHTHYFhWpZ0jAi6aLG2LBYdj47OOX4Oc3pu6iQYjrmUldns6a9BHSHvgTxeM1ccLjYuon9q9l4iwaV6mlCl+4/bN5+dB5j9Fhrc9Hp4KFJTHmkk9EV6sg4WfkYEbQL1O/goSDsKcY2uUPlOhp4rz98XgAQdhhwUiUof43U1hS226BDGF7ImiFb6InbvvpOYTaz94USTbDTXInqwuaipUhvdH3jFcVefij1ULbHHDzTzq9SOJOXnz051setbGIjgk= sc60@node0.kvs-multi-server.uiucr-rk-kvs-pg0.apt.emulab.net" && \
+echo "$PUBKEY" >> ~/.ssh/authorized_keys
+```

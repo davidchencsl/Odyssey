@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# set -x
 #EXECUTABLE="$1"
 #MAKE_FOLDER="/home/s1687259/odyssey/build"
 #SCRIPT_FOLDER="/home/s1687259/odyssey/bin"
@@ -43,6 +43,7 @@ while getopts ":B:R:w:x:h" opt; do
       ;;
   esac
 done
+
 
 MAKE_FOLDER="${OD_HOME}/build"
 SCRIPT_FOLDER="${OD_HOME}/bin"

@@ -1,7 +1,7 @@
 INFORMATICS="informatics"
 CLOUDLAB="cloudlab"
-SETUP=$INFORMATICS
-
+SETUP=$CLOUDLAB
+# set -x
 
 if [ $SETUP == $INFORMATICS ]; then
   echo "informatics"
@@ -26,27 +26,24 @@ if [ $SETUP == $INFORMATICS ]; then
   IS_ROCE=1
 else
   echo "cloudlab"
-  OD_HOME="/users/vasigavr/odyssey"
+  OD_HOME="/users/sc60/Odyssey"
 
   HOSTS=(
-    10.0.3.1
-    10.0.3.2
-    10.0.3.3
-    10.0.3.4
-    10.0.3.5
+    10.10.1.2
+    10.10.1.3
+    10.10.1.4
+    10.10.1.5
   )
 
   allIPs=(
-	10.0.3.1
-	10.0.3.2
-	10.0.3.3
-	10.0.3.4
-	10.0.3.5
-	10.0.3.6
-	10.0.3.7
+	10.10.1.1
+  10.10.1.2
+  10.10.1.3
+  10.10.1.4
+  10.10.1.5
 	)
 
-  localIP=$(ip addr | grep 'state UP' -A2 | grep 'inet 10.0.3'| awk '{print $2}' | cut -f1  -d'/')
+  localIP=$(ip addr | grep 'state UP' -A2 | grep 'inet 10.10.1'| awk '{print $2}' | cut -f1  -d'/')
   NET_DEVICE_NAME="mlx4_0"
   IS_ROCE=0
 fi

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
-
+# set -x
+cd /users/sc60/Odyssey/build
 #allIPs=(129.215.165.8 #houston
 #        129.215.165.7 #sanantonio
 #        192.168.8.6 #austin
@@ -9,7 +9,7 @@
 #        192.168.5.11
 #        192.168.5.13 )
 ##localIP=$(ip addr | grep 'infiniband' -A2 | sed -n 2p | awk '{print $2}' | cut -f1  -d'/')
-#localIP=$(ip addr | grep 'ether' -A2 | sed -n 2p | awk '{print $2}' | cut -f1  -d'/')
+localIP=$(hostname -I | cut -d' ' -f2)
 BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source $BIN_DIR/cluster.sh
 #
@@ -46,23 +46,18 @@ while getopts ":B:R:w:x:h" opt; do
       ;;
   esac
 done
-
+localIP=$(hostname -I | cut -f2  -d' ')
 
 tmp=$((${#localIP}-1))
 machine_id=-1
 firstIP="${allIPs[0]}"
 remoteIPs="$firstIP"
+echo "Local IP is $localIP"
 for i in "${!allIPs[@]}"; do
-	if [  "${allIPs[i]}" ==  "$localIPA" ]; then
-		machine_id=$i
-	fi
-	if [  "${allIPs[i]}" ==  "$localIPB" ]; then 
-                machine_id=$i 
-	fi
-	if [  "${allIPs[i]}" ==  "$localIPC" ]; then 
+  if [  "${allIPs[i]}" ==  "$localIP" ]; then 
 		 machine_id=$i 
 	fi
-	if [ "${allIPs[i]}" !=  "$firstIP" ]; then
+	if [ "${allIPs[i]}" !=  "$localIP" ]; then
         remoteIPs="${remoteIPs},${allIPs[i]}"
 	fi
 done
@@ -132,5 +127,3 @@ sleep 1
 #  --write-ratio ${WRITE_RATIO} \
 #  --bqr-is-remote ${IS_REMOTE_BQR} \
 #  --bqr-buffer-size ${BQR_READ_BUF_LEN} \
-
-

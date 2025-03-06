@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-
+# set -x
 
 
 BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -22,14 +22,21 @@ cd -
 for EXEC in "${EXECUTABLES[@]}"
 do
 	#echo "${EXEC} copied to {${HOSTS[@]/$LOCAL_HOST}}"
-	parallel --will-cite scp $MAKE_FOLDER/${EXEC} {}:${DEST_FOLDER}/${EXEC} ::: $(echo ${HOSTS[@]/$LOCAL_HOST})
-	echo "${EXEC} copied to {${HOSTS[@]/$LOCAL_HOST}}"
+	for HOST in "${HOSTS[@]}"
+	do
+		ssh ${HOST} "mkdir -p ${DEST_FOLDER}"
+		scp $MAKE_FOLDER/${EXEC} ${HOST}:${DEST_FOLDER}/${EXEC}
+		echo "${EXEC} copied to ${HOST}"
+	done
 done
 
 for SCRIPT in "${SCRIPTS[@]}"
 do
 	#echo "${EXEC} copied to {${HOSTS[@]/$LOCAL_HOST}}"
-	parallel --will-cite scp $SCRIPT_FOLDER/${SCRIPT} {}:${DEST_FOLDER}/${SCRIPT} ::: $(echo ${HOSTS[@]/$LOCAL_HOST})
-	parallel --will-cite scp $SCRIPT_FOLDER/cluster.sh {}:${DEST_FOLDER}/cluster.sh ::: $(echo ${HOSTS[@]/$LOCAL_HOST})
-	echo "${SCRIPT} copied to {${HOSTS[@]/$LOCAL_HOST}}"
+	for HOST in "${HOSTS[@]}"
+	do
+		scp -o ConnectTimeout=5 $SCRIPT_FOLDER/${SCRIPT} ${HOST}:${DEST_FOLDER}/${SCRIPT}
+		scp -o ConnectTimeout=5 $SCRIPT_FOLDER/cluster.sh ${HOST}:${DEST_FOLDER}/cluster.sh
+		echo "${SCRIPT} copied to ${HOST}"
+	done
 done
